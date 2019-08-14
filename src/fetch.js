@@ -1,7 +1,13 @@
 import axios from 'axios'
 import { isObject, startsWith, forEach, concat } from 'lodash'
 
-module.exports = async ({ apiURL, bucketSlug, objectType, apiAccess }) => {
+module.exports = async ({
+  apiURL,
+  bucketSlug,
+  objectType,
+  apiAccess,
+  hideMetafields,
+}) => {
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
   console.log(`Starting to fetch data from Cosmic JS (${objectType})`)
@@ -14,6 +20,7 @@ module.exports = async ({ apiURL, bucketSlug, objectType, apiAccess }) => {
   if (apiAccess.hasOwnProperty('read_key') && apiAccess.read_key.length !== 0) {
     apiEndpoint = apiEndpoint + `&read_key=${apiAccess.read_key}`
     apiEndpoint = apiEndpoint + `&limit=${limit}`
+    apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
   }
 
   // Make initial API request.

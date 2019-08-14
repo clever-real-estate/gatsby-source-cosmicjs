@@ -9,6 +9,7 @@ exports.sourceNodes = async (
     bucketSlug = '',
     objectTypes = [],
     apiAccess = {},
+    hideMetafields = false,
   }
 ) => {
   const { createNode } = boundActionCreators
@@ -19,6 +20,7 @@ exports.sourceNodes = async (
       bucketSlug,
       objectType,
       apiAccess,
+      hideMetafields,
     })
   )
 
