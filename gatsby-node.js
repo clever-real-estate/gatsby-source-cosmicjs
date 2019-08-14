@@ -32,7 +32,9 @@ exports.sourceNodes = function () {
         _ref3$objectTypes = _ref3.objectTypes,
         objectTypes = _ref3$objectTypes === undefined ? [] : _ref3$objectTypes,
         _ref3$apiAccess = _ref3.apiAccess,
-        apiAccess = _ref3$apiAccess === undefined ? {} : _ref3$apiAccess;
+        apiAccess = _ref3$apiAccess === undefined ? {} : _ref3$apiAccess,
+        _ref3$hideMetafields = _ref3.hideMetafields,
+        hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields;
     var createNode, promises, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -44,7 +46,8 @@ exports.sourceNodes = function () {
                 apiURL: apiURL,
                 bucketSlug: bucketSlug,
                 objectType: objectType,
-                apiAccess: apiAccess
+                apiAccess: apiAccess,
+                hideMetafields: hideMetafields
               });
             });
 

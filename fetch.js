@@ -21,7 +21,8 @@ module.exports = function () {
     var apiURL = _ref2.apiURL,
         bucketSlug = _ref2.bucketSlug,
         objectType = _ref2.objectType,
-        apiAccess = _ref2.apiAccess;
+        apiAccess = _ref2.apiAccess,
+        hideMetafields = _ref2.hideMetafields;
     var timeLabel, objects, limit, skip, apiEndpoint, documents, additionalCallsRequired, i, skipEndpoint, response;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -42,6 +43,7 @@ module.exports = function () {
             if (apiAccess.hasOwnProperty('read_key') && apiAccess.read_key.length !== 0) {
               apiEndpoint = apiEndpoint + ('&read_key=' + apiAccess.read_key);
               apiEndpoint = apiEndpoint + ('&limit=' + limit);
+              apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
             }
 
             // Make initial API request.
