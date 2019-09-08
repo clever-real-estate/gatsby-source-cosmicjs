@@ -13,16 +13,29 @@ exports.sourceNodes = async (
   }
 ) => {
   const { createNode } = boundActionCreators
-
-  const promises = objectTypes.map(objectType =>
-    fetchData({
-      apiURL,
-      bucketSlug,
-      objectType,
-      apiAccess,
-      hideMetafields,
-    })
-  )
+  const defaultLimit = 1000;
+  
+  const promises = objectTypes.map(objectType => {
+    if (typeof objectType === 'string') {
+      return fetchData({
+        apiURL,
+        bucketSlug,
+        objectType,
+        limit: defaultLimit,
+        apiAccess,
+        hideMetafields,
+      })
+    } else if(typeof objectType === 'object') {
+      return fetchData({
+        apiURL,
+        bucketSlug,
+        objectType: objectType.objectType,
+        limit: objectType.limit,
+        apiAccess,
+        hideMetafields,
+      })
+    }
+  })
 
   // Execute the promises.
   const data = await Promise.all(promises)
