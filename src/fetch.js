@@ -7,6 +7,7 @@ module.exports = async ({
   objectType,
   apiAccess,
   hideMetafields,
+  isDevelopment,
 }) => {
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
@@ -42,18 +43,26 @@ module.exports = async ({
     // Query all data from endpoint
     // calculate number of calls to retrieve entire object type
     const additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1
-
-    for (let i = 0; i < additionalCallsRequired; i += 1) {
-      // skip previously requested objects
-      skip = skip + limit
-      let skipEndpoint = apiEndpoint + `&skip=${skip}`
-      // Query next batch from endpoint
-      let response = await axios(skipEndpoint)
+    if (isDevelopment) {
+      let response = await axios(apiEndpoint)
       if (response.data.objects) {
         objects = concat(objects, response.data.objects)
       } else {
         console.error(`${objectType} fetch issue: ${documents.message}`)
-        break
+      }
+    } else {
+      for (let i = 0; i < additionalCallsRequired; i += 1) {
+        // skip previously requested objects
+        skip = skip + limit
+        let skipEndpoint = apiEndpoint + `&skip=${skip}`
+        // Query next batch from endpoint
+        let response = await axios(skipEndpoint)
+        if (response.data.objects) {
+          objects = concat(objects, response.data.objects)
+        } else {
+          console.error(`${objectType} fetch issue: ${documents.message}`)
+          break
+        }
       }
     }
   }

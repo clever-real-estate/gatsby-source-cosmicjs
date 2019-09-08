@@ -10,19 +10,35 @@ exports.sourceNodes = async (
     objectTypes = [],
     apiAccess = {},
     hideMetafields = false,
+    isDevelopment = false,
   }
 ) => {
   const { createNode } = boundActionCreators
+  const defaultLimit = 1000
 
-  const promises = objectTypes.map(objectType =>
-    fetchData({
-      apiURL,
-      bucketSlug,
-      objectType,
-      apiAccess,
-      hideMetafields,
-    })
-  )
+  const promises = objectTypes.map(objectType => {
+    if (typeof objectType === 'string') {
+      return fetchData({
+        apiURL,
+        bucketSlug,
+        objectType,
+        limit: defaultLimit,
+        apiAccess,
+        hideMetafields,
+        isDevelopment,
+      })
+    } else if (typeof objectType === 'object') {
+      return fetchData({
+        apiURL,
+        bucketSlug,
+        objectType: objectType.objectType,
+        limit: objectType.limit,
+        apiAccess,
+        hideMetafields,
+        isDevelopment,
+      })
+    }
+  })
 
   // Execute the promises.
   const data = await Promise.all(promises)

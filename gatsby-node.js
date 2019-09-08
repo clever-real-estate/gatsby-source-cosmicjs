@@ -8,6 +8,10 @@ var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
 
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -34,29 +38,46 @@ exports.sourceNodes = function () {
         _ref3$apiAccess = _ref3.apiAccess,
         apiAccess = _ref3$apiAccess === undefined ? {} : _ref3$apiAccess,
         _ref3$hideMetafields = _ref3.hideMetafields,
-        hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields;
-    var createNode, promises, data;
+        hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields,
+        _ref3$isDevelopment = _ref3.isDevelopment,
+        isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment;
+    var createNode, defaultLimit, promises, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             createNode = boundActionCreators.createNode;
+            defaultLimit = 1000;
             promises = objectTypes.map(function (objectType) {
-              return (0, _fetch2.default)({
-                apiURL: apiURL,
-                bucketSlug: bucketSlug,
-                objectType: objectType,
-                apiAccess: apiAccess,
-                hideMetafields: hideMetafields
-              });
+              if (typeof objectType === 'string') {
+                return (0, _fetch2.default)({
+                  apiURL: apiURL,
+                  bucketSlug: bucketSlug,
+                  objectType: objectType,
+                  limit: defaultLimit,
+                  apiAccess: apiAccess,
+                  hideMetafields: hideMetafields,
+                  isDevelopment: isDevelopment
+                });
+              } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
+                return (0, _fetch2.default)({
+                  apiURL: apiURL,
+                  bucketSlug: bucketSlug,
+                  objectType: objectType.objectType,
+                  limit: objectType.limit,
+                  apiAccess: apiAccess,
+                  hideMetafields: hideMetafields,
+                  isDevelopment: isDevelopment
+                });
+              }
             });
 
             // Execute the promises.
 
-            _context.next = 4;
+            _context.next = 5;
             return _promise2.default.all(promises);
 
-          case 4:
+          case 5:
             data = _context.sent;
 
 
@@ -69,7 +90,7 @@ exports.sourceNodes = function () {
               });
             });
 
-          case 6:
+          case 7:
           case 'end':
             return _context.stop();
         }
