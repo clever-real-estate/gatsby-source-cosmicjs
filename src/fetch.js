@@ -13,7 +13,6 @@ module.exports = async ({
   console.time(timeLabel)
   console.log(`Starting to fetch data from Cosmic JS (${objectType})`)
   let objects = []
-  const limit = limit
   let skip = 0
   // Define API endpoint.
   let apiEndpoint = `${apiURL}/${bucketSlug}/objects?type=${objectType}`

@@ -21,9 +21,10 @@ module.exports = function () {
     var apiURL = _ref2.apiURL,
         bucketSlug = _ref2.bucketSlug,
         objectType = _ref2.objectType,
+        limit = _ref2.limit,
         apiAccess = _ref2.apiAccess,
         hideMetafields = _ref2.hideMetafields;
-    var timeLabel, objects, limit, skip, apiEndpoint, documents, additionalCallsRequired, i, skipEndpoint, response;
+    var timeLabel, objects, skip, apiEndpoint, documents, additionalCallsRequired, i, skipEndpoint, response;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -33,7 +34,6 @@ module.exports = function () {
             console.time(timeLabel);
             console.log('Starting to fetch data from Cosmic JS (' + objectType + ')');
             objects = [];
-            limit = 1000;
             skip = 0;
             // Define API endpoint.
 
@@ -47,14 +47,14 @@ module.exports = function () {
             }
 
             // Make initial API request.
-            _context.next = 10;
+            _context.next = 9;
             return (0, _axios2.default)(apiEndpoint);
 
-          case 10:
+          case 9:
             documents = _context.sent;
 
             if (!(documents.data.objects === undefined)) {
-              _context.next = 15;
+              _context.next = 14;
               break;
             }
 
@@ -62,7 +62,7 @@ module.exports = function () {
             console.timeEnd(timeLabel);
             return _context.abrupt('return', objects);
 
-          case 15:
+          case 14:
 
             if (documents.data.objects) {
               objects = documents.data.objects;
@@ -71,7 +71,7 @@ module.exports = function () {
             // check if there's more that request limit of objects for object type
 
             if (!(documents.data.total && documents.data.total > limit)) {
-              _context.next = 34;
+              _context.next = 33;
               break;
             }
 
@@ -80,9 +80,9 @@ module.exports = function () {
             additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1;
             i = 0;
 
-          case 19:
+          case 18:
             if (!(i < additionalCallsRequired)) {
-              _context.next = 34;
+              _context.next = 33;
               break;
             }
 
@@ -91,31 +91,31 @@ module.exports = function () {
             skipEndpoint = apiEndpoint + ('&skip=' + skip);
             // Query next batch from endpoint
 
-            _context.next = 24;
+            _context.next = 23;
             return (0, _axios2.default)(skipEndpoint);
 
-          case 24:
+          case 23:
             response = _context.sent;
 
             if (!response.data.objects) {
-              _context.next = 29;
+              _context.next = 28;
               break;
             }
 
             objects = (0, _lodash.concat)(objects, response.data.objects);
-            _context.next = 31;
+            _context.next = 30;
             break;
 
-          case 29:
+          case 28:
             console.error(objectType + ' fetch issue: ' + documents.message);
-            return _context.abrupt('break', 34);
+            return _context.abrupt('break', 33);
 
-          case 31:
+          case 30:
             i += 1;
-            _context.next = 19;
+            _context.next = 18;
             break;
 
-          case 34:
+          case 33:
 
             console.log('Fetched ' + objects.length + ' ' + (objects.length === 1 ? 'object' : 'objects') + ' for object type: ' + objectType);
             console.timeEnd(timeLabel);
@@ -129,7 +129,7 @@ module.exports = function () {
 
             return _context.abrupt('return', objects);
 
-          case 38:
+          case 37:
           case 'end':
             return _context.stop();
         }
