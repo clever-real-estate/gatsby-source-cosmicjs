@@ -29,7 +29,7 @@ module.exports = async ({
 
   // Check for empty object type
   if (documents.data.objects === undefined) {
-    console.error(`${objectType} error: ${documents.message}`)
+    console.error(`${objectType} error: ${documents.message} limit: ${limit}`)
     console.timeEnd(timeLabel)
     return objects
   }
