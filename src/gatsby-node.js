@@ -24,7 +24,10 @@ exports.sourceNodes = async (
       limit: objectType.limit ? objectType.limit : limit,
       depth: objectType.depth ? objectType.depth : depth,
       apiAccess,
-      hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
+      hideMetafields:
+        objectType.hideMetafields !== undefined
+          ? objectType.hideMetafields
+          : hideMetafields,
       isDevelopment,
     })
   })

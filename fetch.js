@@ -48,7 +48,7 @@ module.exports = function () {
               apiEndpoint = apiEndpoint + ('&read_key=' + apiAccess.read_key);
               apiEndpoint = apiEndpoint + ('&limit=' + limit);
               // TODO: current bug on hide metafields
-              if (!hideMetafields) {
+              if (hideMetafields) {
                 apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
               }
               apiEndpoint = apiEndpoint + ('&depth=' + depth);
