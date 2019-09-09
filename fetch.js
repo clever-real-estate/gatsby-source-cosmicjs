@@ -36,7 +36,7 @@ module.exports = function () {
             timeLabel = 'Fetch Cosmic JS data for (' + objectType + ')';
 
             console.time(timeLabel);
-            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit);
+            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth);
             objects = [];
             skip = 0;
             // Define API endpoint.
@@ -48,6 +48,7 @@ module.exports = function () {
               apiEndpoint = apiEndpoint + ('&read_key=' + apiAccess.read_key);
               apiEndpoint = apiEndpoint + ('&limit=' + limit);
               apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
+              apiEndpoint = apiEndpoint + ('&depth=' + depth);
             }
 
             // Make initial API request.
@@ -89,7 +90,7 @@ module.exports = function () {
             }
 
             _context.next = 20;
-            return (0, _axios2.default)(apiEndpoint + ('&depth=' + depth));
+            return (0, _axios2.default)(apiEndpoint);
 
           case 20:
             response = _context.sent;
@@ -113,7 +114,7 @@ module.exports = function () {
 
             // skip previously requested objects
             skip = skip + limit;
-            skipEndpoint = apiEndpoint + ('&skip=' + skip + '&depth=' + depth);
+            skipEndpoint = apiEndpoint + ('&skip=' + skip);
             // Query next batch from endpoint
 
             _context.next = 30;

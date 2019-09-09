@@ -29,7 +29,6 @@ exports.sourceNodes = async (
         isDevelopment,
       })
     } else if (typeof objectType === 'object') {
-
       return fetchData({
         apiURL,
         bucketSlug,

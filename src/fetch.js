@@ -14,7 +14,7 @@ module.exports = async ({
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
   console.log(
-    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit}`
+    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth}`
   )
   let objects = []
   let skip = 0
@@ -25,6 +25,7 @@ module.exports = async ({
     apiEndpoint = apiEndpoint + `&read_key=${apiAccess.read_key}`
     apiEndpoint = apiEndpoint + `&limit=${limit}`
     apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
+    apiEndpoint = apiEndpoint + `&depth=${depth}`
   }
 
   // Make initial API request.
@@ -47,7 +48,7 @@ module.exports = async ({
     // calculate number of calls to retrieve entire object type
     const additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1
     if (isDevelopment) {
-      let response = await axios(apiEndpoint + `&depth=${depth}`)
+      let response = await axios(apiEndpoint)
       if (response.data.objects) {
         objects = concat(objects, response.data.objects)
       } else {
@@ -57,7 +58,7 @@ module.exports = async ({
       for (let i = 0; i < additionalCallsRequired; i += 1) {
         // skip previously requested objects
         skip = skip + limit
-        let skipEndpoint = apiEndpoint + `&skip=${skip}&depth=${depth}`
+        let skipEndpoint = apiEndpoint + `&skip=${skip}`
         // Query next batch from endpoint
         let response = await axios(skipEndpoint)
         if (response.data.objects) {
