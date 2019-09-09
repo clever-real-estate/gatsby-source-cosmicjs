@@ -36,7 +36,7 @@ exports.sourceNodes = async (
   objectTypes.forEach((objectType, i) => {
     var items = data[i]
     items.forEach(item => {
-      let title = objectType.objectType ? objectType.objectType : objectType;
+      let title = objectType.objectType ? objectType.objectType : objectType
       const node = Node(capitalize(title), item)
       createNode(node)
     })
