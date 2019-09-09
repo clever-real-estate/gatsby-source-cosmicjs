@@ -8,10 +8,6 @@ var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
 
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
 var _typeof2 = require('babel-runtime/helpers/typeof');
 
 var _typeof3 = _interopRequireDefault(_typeof2);
@@ -60,13 +56,12 @@ exports.sourceNodes = function () {
                   bucketSlug: bucketSlug,
                   objectType: objectType,
                   limit: limit,
+                  depth: depth,
                   apiAccess: apiAccess,
                   hideMetafields: hideMetafields,
                   isDevelopment: isDevelopment
                 });
               } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
-                var _fetchData;
-
                 if (objectType.hasOwnProperty('depth')) {
                   depth = objectType.depth;
                 }
@@ -74,13 +69,16 @@ exports.sourceNodes = function () {
                   limit = objectType.limit;
                 }
 
-                return (0, _fetch2.default)((_fetchData = {
+                return (0, _fetch2.default)({
                   apiURL: apiURL,
                   bucketSlug: bucketSlug,
-                  depth: depth,
                   objectType: objectType.objectType,
-                  limit: limit
-                }, (0, _defineProperty3.default)(_fetchData, 'depth', depth), (0, _defineProperty3.default)(_fetchData, 'apiAccess', apiAccess), (0, _defineProperty3.default)(_fetchData, 'hideMetafields', hideMetafields), (0, _defineProperty3.default)(_fetchData, 'isDevelopment', isDevelopment), _fetchData));
+                  limit: limit,
+                  depth: depth,
+                  apiAccess: apiAccess,
+                  hideMetafields: hideMetafields,
+                  isDevelopment: isDevelopment
+                });
               }
             });
 

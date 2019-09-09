@@ -15,7 +15,7 @@ exports.sourceNodes = async (
 ) => {
   const { createNode } = boundActionCreators
   let limit = 1000
-  let depth = 3;
+  let depth = 3
   const promises = objectTypes.map(objectType => {
     if (typeof objectType === 'string') {
       return fetchData({
@@ -23,22 +23,22 @@ exports.sourceNodes = async (
         bucketSlug,
         objectType,
         limit,
+        depth,
         apiAccess,
         hideMetafields,
         isDevelopment,
       })
     } else if (typeof objectType === 'object') {
       if (objectType.hasOwnProperty('depth')) {
-        depth = objectType.depth;
+        depth = objectType.depth
       }
       if (objectType.hasOwnProperty('limit')) {
-        limit = objectType.limit;
+        limit = objectType.limit
       }
 
       return fetchData({
         apiURL,
         bucketSlug,
-        depth: depth,
         objectType: objectType.objectType,
         limit,
         depth,
