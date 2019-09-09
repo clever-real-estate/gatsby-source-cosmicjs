@@ -29,6 +29,7 @@ exports.sourceNodes = async (
         isDevelopment,
       })
     } else if (typeof objectType === 'object') {
+      console.log(`THE OBJECT TYPE IS ${objectType.objectType}`)
       return fetchData({
         apiURL,
         bucketSlug,

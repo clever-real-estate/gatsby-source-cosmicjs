@@ -62,6 +62,7 @@ exports.sourceNodes = function () {
                   isDevelopment: isDevelopment
                 });
               } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
+                console.log('THE OBJECT TYPE IS ' + objectType.objectType);
                 return (0, _fetch2.default)({
                   apiURL: apiURL,
                   bucketSlug: bucketSlug,
