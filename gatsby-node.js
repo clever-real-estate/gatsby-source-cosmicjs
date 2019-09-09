@@ -8,10 +8,6 @@ var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
-
-var _typeof3 = _interopRequireDefault(_typeof2);
-
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -50,30 +46,16 @@ exports.sourceNodes = function () {
             limit = 1000;
             depth = 3;
             promises = objectTypes.map(function (objectType) {
-              if (typeof objectType === 'string') {
-                return (0, _fetch2.default)({
-                  apiURL: apiURL,
-                  bucketSlug: bucketSlug,
-                  objectType: objectType,
-                  limit: limit,
-                  depth: depth,
-                  apiAccess: apiAccess,
-                  hideMetafields: hideMetafields,
-                  isDevelopment: isDevelopment
-                });
-              } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
-                console.log('THE OBJECT TYPE IS ' + objectType.objectType);
-                return (0, _fetch2.default)({
-                  apiURL: apiURL,
-                  bucketSlug: bucketSlug,
-                  objectType: objectType.objectType,
-                  limit: objectType.limit ? objectType.limit : limit,
-                  depth: objectType.depth ? objectType.depth : depth,
-                  apiAccess: apiAccess,
-                  hideMetafields: hideMetafields,
-                  isDevelopment: isDevelopment
-                });
-              }
+              return (0, _fetch2.default)({
+                apiURL: apiURL,
+                bucketSlug: bucketSlug,
+                objectType: objectType.objectType ? objectType.objectType : objectType,
+                limit: objectType.limit ? objectType.limit : limit,
+                depth: objectType.depth ? objectType.depth : depth,
+                apiAccess: apiAccess,
+                hideMetafields: hideMetafields,
+                isDevelopment: isDevelopment
+              });
             });
 
             // Execute the promises.
@@ -89,7 +71,8 @@ exports.sourceNodes = function () {
             objectTypes.forEach(function (objectType, i) {
               var items = data[i];
               items.forEach(function (item) {
-                var node = (0, _nodes.Node)((0, _lodash.capitalize)(objectType), item);
+                var title = objectType.objectType ? objectType.objectType : objectType;
+                var node = (0, _nodes.Node)((0, _lodash.capitalize)(title), item);
                 createNode(node);
               });
             });

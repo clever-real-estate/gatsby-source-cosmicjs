@@ -17,30 +17,16 @@ exports.sourceNodes = async (
   let limit = 1000
   let depth = 3
   const promises = objectTypes.map(objectType => {
-    if (typeof objectType === 'string') {
-      return fetchData({
-        apiURL,
-        bucketSlug,
-        objectType,
-        limit,
-        depth,
-        apiAccess,
-        hideMetafields,
-        isDevelopment,
-      })
-    } else if (typeof objectType === 'object') {
-      console.log(`THE OBJECT TYPE IS ${objectType.objectType}`)
-      return fetchData({
-        apiURL,
-        bucketSlug,
-        objectType: objectType.objectType,
-        limit: objectType.limit ? objectType.limit : limit,
-        depth: objectType.depth ? objectType.depth : depth,
-        apiAccess,
-        hideMetafields,
-        isDevelopment,
-      })
-    }
+    return fetchData({
+      apiURL,
+      bucketSlug,
+      objectType: objectType.objectType ? objectType.objectType : objectType,
+      limit: objectType.limit ? objectType.limit : limit,
+      depth: objectType.depth ? objectType.depth : depth,
+      apiAccess,
+      hideMetafields,
+      isDevelopment,
+    })
   })
 
   // Execute the promises.
@@ -50,7 +36,8 @@ exports.sourceNodes = async (
   objectTypes.forEach((objectType, i) => {
     var items = data[i]
     items.forEach(item => {
-      const node = Node(capitalize(objectType), item)
+      let title = objectType.objectType ? objectType.objectType : objectType;
+      const node = Node(capitalize(title), item)
       createNode(node)
     })
   })
