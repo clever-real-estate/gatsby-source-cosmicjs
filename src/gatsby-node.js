@@ -29,19 +29,13 @@ exports.sourceNodes = async (
         isDevelopment,
       })
     } else if (typeof objectType === 'object') {
-      if (objectType.hasOwnProperty('depth')) {
-        depth = objectType.depth
-      }
-      if (objectType.hasOwnProperty('limit')) {
-        limit = objectType.limit
-      }
 
       return fetchData({
         apiURL,
         bucketSlug,
         objectType: objectType.objectType,
-        limit,
-        depth,
+        limit: objectType.limit ? objectType.limit : limit,
+        depth: objectType.depth ? objectType.depth : depth,
         apiAccess,
         hideMetafields,
         isDevelopment,

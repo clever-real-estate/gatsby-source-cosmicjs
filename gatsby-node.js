@@ -62,19 +62,13 @@ exports.sourceNodes = function () {
                   isDevelopment: isDevelopment
                 });
               } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
-                if (objectType.hasOwnProperty('depth')) {
-                  depth = objectType.depth;
-                }
-                if (objectType.hasOwnProperty('limit')) {
-                  limit = objectType.limit;
-                }
 
                 return (0, _fetch2.default)({
                   apiURL: apiURL,
                   bucketSlug: bucketSlug,
                   objectType: objectType.objectType,
-                  limit: limit,
-                  depth: depth,
+                  limit: objectType.limit ? objectType.limit : limit,
+                  depth: objectType.depth ? objectType.depth : depth,
                   apiAccess: apiAccess,
                   hideMetafields: hideMetafields,
                   isDevelopment: isDevelopment
