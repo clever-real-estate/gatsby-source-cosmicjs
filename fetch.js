@@ -22,6 +22,7 @@ module.exports = function () {
         bucketSlug = _ref2.bucketSlug,
         objectType = _ref2.objectType,
         limit = _ref2.limit,
+        depth = _ref2.depth,
         apiAccess = _ref2.apiAccess,
         hideMetafields = _ref2.hideMetafields,
         isDevelopment = _ref2.isDevelopment;
@@ -88,7 +89,7 @@ module.exports = function () {
             }
 
             _context.next = 20;
-            return (0, _axios2.default)(apiEndpoint);
+            return (0, _axios2.default)(apiEndpoint + ('&depth=' + depth));
 
           case 20:
             response = _context.sent;
@@ -112,7 +113,7 @@ module.exports = function () {
 
             // skip previously requested objects
             skip = skip + limit;
-            skipEndpoint = apiEndpoint + ('&skip=' + skip);
+            skipEndpoint = apiEndpoint + ('&skip=' + skip + '&depth=' + depth);
             // Query next batch from endpoint
 
             _context.next = 30;

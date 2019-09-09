@@ -14,25 +14,34 @@ exports.sourceNodes = async (
   }
 ) => {
   const { createNode } = boundActionCreators
-  const defaultLimit = 1000
-
+  let limit = 1000
+  let depth = 3;
   const promises = objectTypes.map(objectType => {
     if (typeof objectType === 'string') {
       return fetchData({
         apiURL,
         bucketSlug,
         objectType,
-        limit: defaultLimit,
+        limit,
         apiAccess,
         hideMetafields,
         isDevelopment,
       })
     } else if (typeof objectType === 'object') {
+      if (objectType.hasOwnProperty('depth')) {
+        depth = objectType.depth;
+      }
+      if (objectType.hasOwnProperty('limit')) {
+        limit = objectType.limit;
+      }
+
       return fetchData({
         apiURL,
         bucketSlug,
+        depth: depth,
         objectType: objectType.objectType,
-        limit: objectType.limit,
+        limit,
+        depth,
         apiAccess,
         hideMetafields,
         isDevelopment,

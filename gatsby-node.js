@@ -8,6 +8,10 @@ var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 var _typeof2 = require('babel-runtime/helpers/typeof');
 
 var _typeof3 = _interopRequireDefault(_typeof2);
@@ -41,43 +45,51 @@ exports.sourceNodes = function () {
         hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields,
         _ref3$isDevelopment = _ref3.isDevelopment,
         isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment;
-    var createNode, defaultLimit, promises, data;
+    var createNode, limit, depth, promises, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             createNode = boundActionCreators.createNode;
-            defaultLimit = 1000;
+            limit = 1000;
+            depth = 3;
             promises = objectTypes.map(function (objectType) {
               if (typeof objectType === 'string') {
                 return (0, _fetch2.default)({
                   apiURL: apiURL,
                   bucketSlug: bucketSlug,
                   objectType: objectType,
-                  limit: defaultLimit,
+                  limit: limit,
                   apiAccess: apiAccess,
                   hideMetafields: hideMetafields,
                   isDevelopment: isDevelopment
                 });
               } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
-                return (0, _fetch2.default)({
+                var _fetchData;
+
+                if (objectType.hasOwnProperty('depth')) {
+                  depth = objectType.depth;
+                }
+                if (objectType.hasOwnProperty('limit')) {
+                  limit = objectType.limit;
+                }
+
+                return (0, _fetch2.default)((_fetchData = {
                   apiURL: apiURL,
                   bucketSlug: bucketSlug,
+                  depth: depth,
                   objectType: objectType.objectType,
-                  limit: objectType.limit,
-                  apiAccess: apiAccess,
-                  hideMetafields: hideMetafields,
-                  isDevelopment: isDevelopment
-                });
+                  limit: limit
+                }, (0, _defineProperty3.default)(_fetchData, 'depth', depth), (0, _defineProperty3.default)(_fetchData, 'apiAccess', apiAccess), (0, _defineProperty3.default)(_fetchData, 'hideMetafields', hideMetafields), (0, _defineProperty3.default)(_fetchData, 'isDevelopment', isDevelopment), _fetchData));
               }
             });
 
             // Execute the promises.
 
-            _context.next = 5;
+            _context.next = 6;
             return _promise2.default.all(promises);
 
-          case 5:
+          case 6:
             data = _context.sent;
 
 
@@ -90,7 +102,7 @@ exports.sourceNodes = function () {
               });
             });
 
-          case 7:
+          case 8:
           case 'end':
             return _context.stop();
         }
