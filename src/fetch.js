@@ -24,7 +24,7 @@ module.exports = async ({
   if (apiAccess.hasOwnProperty('read_key') && apiAccess.read_key.length !== 0) {
     apiEndpoint = apiEndpoint + `&read_key=${apiAccess.read_key}`
     apiEndpoint = apiEndpoint + `&limit=${limit}`
-    apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
+    // apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
     apiEndpoint = apiEndpoint + `&depth=${depth}`
   }
 
