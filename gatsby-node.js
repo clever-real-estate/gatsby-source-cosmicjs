@@ -34,7 +34,7 @@ exports.sourceNodes = function () {
         _ref3$apiAccess = _ref3.apiAccess,
         apiAccess = _ref3$apiAccess === undefined ? {} : _ref3$apiAccess,
         _ref3$hideMetafields = _ref3.hideMetafields,
-        hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields,
+        hideMetafields = _ref3$hideMetafields === undefined ? true : _ref3$hideMetafields,
         _ref3$isDevelopment = _ref3.isDevelopment,
         isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment;
     var createNode, limit, depth, promises, data;
@@ -53,7 +53,7 @@ exports.sourceNodes = function () {
                 limit: objectType.limit ? objectType.limit : limit,
                 depth: objectType.depth ? objectType.depth : depth,
                 apiAccess: apiAccess,
-                hideMetafields: hideMetafields,
+                hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
                 isDevelopment: isDevelopment
               });
             });

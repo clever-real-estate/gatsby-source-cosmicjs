@@ -9,7 +9,7 @@ exports.sourceNodes = async (
     bucketSlug = '',
     objectTypes = [],
     apiAccess = {},
-    hideMetafields = false,
+    hideMetafields = true,
     isDevelopment = false,
   }
 ) => {
@@ -24,7 +24,7 @@ exports.sourceNodes = async (
       limit: objectType.limit ? objectType.limit : limit,
       depth: objectType.depth ? objectType.depth : depth,
       apiAccess,
-      hideMetafields,
+      hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
       isDevelopment,
     })
   })
