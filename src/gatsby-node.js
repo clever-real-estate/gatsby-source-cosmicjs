@@ -11,6 +11,7 @@ exports.sourceNodes = async (
     apiAccess = {},
     hideMetafields = true,
     isDevelopment = false,
+    logging = false,
   }
 ) => {
   const { createNode } = boundActionCreators
@@ -29,6 +30,7 @@ exports.sourceNodes = async (
           ? objectType.hideMetafields
           : hideMetafields,
       isDevelopment,
+      logging,
     })
   })
 
