@@ -10,6 +10,7 @@ module.exports = async ({
   apiAccess,
   hideMetafields,
   isDevelopment,
+  logging,
 }) => {
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
@@ -30,7 +31,9 @@ module.exports = async ({
     }
     apiEndpoint = apiEndpoint + `&depth=${depth}`
   }
-
+  if (logging) {
+    console.log(apiEndpoint);
+  }
   // Make initial API request.
   const documents = await axios(apiEndpoint)
 

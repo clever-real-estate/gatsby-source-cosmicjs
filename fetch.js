@@ -25,7 +25,8 @@ module.exports = function () {
         depth = _ref2.depth,
         apiAccess = _ref2.apiAccess,
         hideMetafields = _ref2.hideMetafields,
-        isDevelopment = _ref2.isDevelopment;
+        isDevelopment = _ref2.isDevelopment,
+        logging = _ref2.logging;
 
     var timeLabel, objects, skip, apiEndpoint, documents, additionalCallsRequired, response, i, skipEndpoint, _response;
 
@@ -53,16 +54,18 @@ module.exports = function () {
               }
               apiEndpoint = apiEndpoint + ('&depth=' + depth);
             }
-
+            if (logging) {
+              console.log(apiEndpoint);
+            }
             // Make initial API request.
-            _context.next = 9;
+            _context.next = 10;
             return (0, _axios2.default)(apiEndpoint);
 
-          case 9:
+          case 10:
             documents = _context.sent;
 
             if (!(documents.data.objects === undefined)) {
-              _context.next = 14;
+              _context.next = 15;
               break;
             }
 
@@ -70,7 +73,7 @@ module.exports = function () {
             console.timeEnd(timeLabel);
             return _context.abrupt('return', objects);
 
-          case 14:
+          case 15:
 
             if (documents.data.objects) {
               objects = documents.data.objects;
@@ -79,7 +82,7 @@ module.exports = function () {
             // check if there's more that request limit of objects for object type
 
             if (!(documents.data.total && documents.data.total > limit)) {
-              _context.next = 40;
+              _context.next = 41;
               break;
             }
 
@@ -88,14 +91,14 @@ module.exports = function () {
             additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1;
 
             if (!isDevelopment) {
-              _context.next = 24;
+              _context.next = 25;
               break;
             }
 
-            _context.next = 20;
+            _context.next = 21;
             return (0, _axios2.default)(apiEndpoint);
 
-          case 20:
+          case 21:
             response = _context.sent;
 
             if (response.data.objects) {
@@ -103,15 +106,15 @@ module.exports = function () {
             } else {
               console.error(objectType + ' fetch issue: ' + documents.message);
             }
-            _context.next = 40;
+            _context.next = 41;
             break;
 
-          case 24:
+          case 25:
             i = 0;
 
-          case 25:
+          case 26:
             if (!(i < additionalCallsRequired)) {
-              _context.next = 40;
+              _context.next = 41;
               break;
             }
 
@@ -120,31 +123,31 @@ module.exports = function () {
             skipEndpoint = apiEndpoint + ('&skip=' + skip);
             // Query next batch from endpoint
 
-            _context.next = 30;
+            _context.next = 31;
             return (0, _axios2.default)(skipEndpoint);
 
-          case 30:
+          case 31:
             _response = _context.sent;
 
             if (!_response.data.objects) {
-              _context.next = 35;
+              _context.next = 36;
               break;
             }
 
             objects = (0, _lodash.concat)(objects, _response.data.objects);
-            _context.next = 37;
+            _context.next = 38;
             break;
 
-          case 35:
+          case 36:
             console.error(objectType + ' fetch issue: ' + documents.message);
-            return _context.abrupt('break', 40);
+            return _context.abrupt('break', 41);
 
-          case 37:
+          case 38:
             i += 1;
-            _context.next = 25;
+            _context.next = 26;
             break;
 
-          case 40:
+          case 41:
 
             console.log('Fetched ' + objects.length + ' ' + (objects.length === 1 ? 'object' : 'objects') + ' for object type: ' + objectType);
             console.timeEnd(timeLabel);
@@ -158,7 +161,7 @@ module.exports = function () {
 
             return _context.abrupt('return', objects);
 
-          case 44:
+          case 45:
           case 'end':
             return _context.stop();
         }

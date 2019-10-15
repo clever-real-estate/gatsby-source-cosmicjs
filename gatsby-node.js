@@ -36,7 +36,9 @@ exports.sourceNodes = function () {
         _ref3$hideMetafields = _ref3.hideMetafields,
         hideMetafields = _ref3$hideMetafields === undefined ? true : _ref3$hideMetafields,
         _ref3$isDevelopment = _ref3.isDevelopment,
-        isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment;
+        isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment,
+        _ref3$logging = _ref3.logging,
+        logging = _ref3$logging === undefined ? false : _ref3$logging;
     var createNode, limit, depth, promises, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -54,7 +56,8 @@ exports.sourceNodes = function () {
                 depth: objectType.depth ? objectType.depth : depth,
                 apiAccess: apiAccess,
                 hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
-                isDevelopment: isDevelopment
+                isDevelopment: isDevelopment,
+                logging: logging
               });
             });
 
