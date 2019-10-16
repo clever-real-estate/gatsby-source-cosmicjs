@@ -6,12 +6,17 @@ module.exports = async ({
   bucketSlug,
   objectType,
   limit,
+  depth,
   apiAccess,
   hideMetafields,
+  isDevelopment,
+  logging,
 }) => {
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
-  console.log(`Starting to fetch data from Cosmic JS (${objectType})`)
+  console.log(
+    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth}`
+  )
   let objects = []
   let skip = 0
   // Define API endpoint.
@@ -20,15 +25,21 @@ module.exports = async ({
   if (apiAccess.hasOwnProperty('read_key') && apiAccess.read_key.length !== 0) {
     apiEndpoint = apiEndpoint + `&read_key=${apiAccess.read_key}`
     apiEndpoint = apiEndpoint + `&limit=${limit}`
-    apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
+    // TODO: current bug on hide metafields
+    if (hideMetafields) {
+      apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
+    }
+    apiEndpoint = apiEndpoint + `&depth=${depth}`
   }
-
+  if (logging) {
+    console.log(apiEndpoint);
+  }
   // Make initial API request.
   const documents = await axios(apiEndpoint)
 
   // Check for empty object type
   if (documents.data.objects === undefined) {
-    console.error(`${objectType} error: ${documents.message}`)
+    console.error(`${objectType} error: ${documents.message} limit: ${limit}`)
     console.timeEnd(timeLabel)
     return objects
   }
@@ -42,18 +53,26 @@ module.exports = async ({
     // Query all data from endpoint
     // calculate number of calls to retrieve entire object type
     const additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1
-
-    for (let i = 0; i < additionalCallsRequired; i += 1) {
-      // skip previously requested objects
-      skip = skip + limit
-      let skipEndpoint = apiEndpoint + `&skip=${skip}`
-      // Query next batch from endpoint
-      let response = await axios(skipEndpoint)
+    if (isDevelopment) {
+      let response = await axios(apiEndpoint)
       if (response.data.objects) {
         objects = concat(objects, response.data.objects)
       } else {
         console.error(`${objectType} fetch issue: ${documents.message}`)
-        break
+      }
+    } else {
+      for (let i = 0; i < additionalCallsRequired; i += 1) {
+        // skip previously requested objects
+        skip = skip + limit
+        let skipEndpoint = apiEndpoint + `&skip=${skip}`
+        // Query next batch from endpoint
+        let response = await axios(skipEndpoint)
+        if (response.data.objects) {
+          objects = concat(objects, response.data.objects)
+        } else {
+          console.error(`${objectType} fetch issue: ${documents.message}`)
+          break
+        }
       }
     }
   }

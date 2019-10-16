@@ -8,10 +8,6 @@ var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
-
-var _typeof3 = _interopRequireDefault(_typeof2);
-
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -38,42 +34,39 @@ exports.sourceNodes = function () {
         _ref3$apiAccess = _ref3.apiAccess,
         apiAccess = _ref3$apiAccess === undefined ? {} : _ref3$apiAccess,
         _ref3$hideMetafields = _ref3.hideMetafields,
-        hideMetafields = _ref3$hideMetafields === undefined ? false : _ref3$hideMetafields;
-    var createNode, defaultLimit, promises, data;
+        hideMetafields = _ref3$hideMetafields === undefined ? true : _ref3$hideMetafields,
+        _ref3$isDevelopment = _ref3.isDevelopment,
+        isDevelopment = _ref3$isDevelopment === undefined ? false : _ref3$isDevelopment,
+        _ref3$logging = _ref3.logging,
+        logging = _ref3$logging === undefined ? false : _ref3$logging;
+    var createNode, limit, depth, promises, data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             createNode = boundActionCreators.createNode;
-            defaultLimit = 1000;
+            limit = 1000;
+            depth = 3;
             promises = objectTypes.map(function (objectType) {
-              if (typeof objectType === 'string') {
-                return (0, _fetch2.default)({
-                  apiURL: apiURL,
-                  bucketSlug: bucketSlug,
-                  objectType: objectType,
-                  limit: defaultLimit,
-                  apiAccess: apiAccess,
-                  hideMetafields: hideMetafields
-                });
-              } else if ((typeof objectType === 'undefined' ? 'undefined' : (0, _typeof3.default)(objectType)) === 'object') {
-                return (0, _fetch2.default)({
-                  apiURL: apiURL,
-                  bucketSlug: bucketSlug,
-                  objectType: objectType.objectType,
-                  limit: objectType.limit,
-                  apiAccess: apiAccess,
-                  hideMetafields: hideMetafields
-                });
-              }
+              return (0, _fetch2.default)({
+                apiURL: apiURL,
+                bucketSlug: bucketSlug,
+                objectType: objectType.objectType ? objectType.objectType : objectType,
+                limit: objectType.limit ? objectType.limit : limit,
+                depth: objectType.depth ? objectType.depth : depth,
+                apiAccess: apiAccess,
+                hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
+                isDevelopment: isDevelopment,
+                logging: logging
+              });
             });
 
             // Execute the promises.
 
-            _context.next = 5;
+            _context.next = 6;
             return _promise2.default.all(promises);
 
-          case 5:
+          case 6:
             data = _context.sent;
 
 
@@ -81,12 +74,13 @@ exports.sourceNodes = function () {
             objectTypes.forEach(function (objectType, i) {
               var items = data[i];
               items.forEach(function (item) {
-                var node = (0, _nodes.Node)((0, _lodash.capitalize)(objectType), item);
+                var title = objectType.objectType ? objectType.objectType : objectType;
+                var node = (0, _nodes.Node)((0, _lodash.capitalize)(title), item);
                 createNode(node);
               });
             });
 
-          case 7:
+          case 8:
           case 'end':
             return _context.stop();
         }

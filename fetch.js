@@ -22,9 +22,14 @@ module.exports = function () {
         bucketSlug = _ref2.bucketSlug,
         objectType = _ref2.objectType,
         limit = _ref2.limit,
+        depth = _ref2.depth,
         apiAccess = _ref2.apiAccess,
-        hideMetafields = _ref2.hideMetafields;
-    var timeLabel, objects, skip, apiEndpoint, documents, additionalCallsRequired, i, skipEndpoint, response;
+        hideMetafields = _ref2.hideMetafields,
+        isDevelopment = _ref2.isDevelopment,
+        logging = _ref2.logging;
+
+    var timeLabel, objects, skip, apiEndpoint, documents, additionalCallsRequired, response, i, skipEndpoint, _response;
+
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -32,7 +37,7 @@ module.exports = function () {
             timeLabel = 'Fetch Cosmic JS data for (' + objectType + ')';
 
             console.time(timeLabel);
-            console.log('Starting to fetch data from Cosmic JS (' + objectType + ')');
+            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth);
             objects = [];
             skip = 0;
             // Define API endpoint.
@@ -43,26 +48,32 @@ module.exports = function () {
             if (apiAccess.hasOwnProperty('read_key') && apiAccess.read_key.length !== 0) {
               apiEndpoint = apiEndpoint + ('&read_key=' + apiAccess.read_key);
               apiEndpoint = apiEndpoint + ('&limit=' + limit);
-              apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
+              // TODO: current bug on hide metafields
+              if (hideMetafields) {
+                apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
+              }
+              apiEndpoint = apiEndpoint + ('&depth=' + depth);
             }
-
+            if (logging) {
+              console.log(apiEndpoint);
+            }
             // Make initial API request.
-            _context.next = 9;
+            _context.next = 10;
             return (0, _axios2.default)(apiEndpoint);
 
-          case 9:
+          case 10:
             documents = _context.sent;
 
             if (!(documents.data.objects === undefined)) {
-              _context.next = 14;
+              _context.next = 15;
               break;
             }
 
-            console.error(objectType + ' error: ' + documents.message);
+            console.error(objectType + ' error: ' + documents.message + ' limit: ' + limit);
             console.timeEnd(timeLabel);
             return _context.abrupt('return', objects);
 
-          case 14:
+          case 15:
 
             if (documents.data.objects) {
               objects = documents.data.objects;
@@ -71,18 +82,39 @@ module.exports = function () {
             // check if there's more that request limit of objects for object type
 
             if (!(documents.data.total && documents.data.total > limit)) {
-              _context.next = 33;
+              _context.next = 41;
               break;
             }
 
             // Query all data from endpoint
             // calculate number of calls to retrieve entire object type
             additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1;
+
+            if (!isDevelopment) {
+              _context.next = 25;
+              break;
+            }
+
+            _context.next = 21;
+            return (0, _axios2.default)(apiEndpoint);
+
+          case 21:
+            response = _context.sent;
+
+            if (response.data.objects) {
+              objects = (0, _lodash.concat)(objects, response.data.objects);
+            } else {
+              console.error(objectType + ' fetch issue: ' + documents.message);
+            }
+            _context.next = 41;
+            break;
+
+          case 25:
             i = 0;
 
-          case 18:
+          case 26:
             if (!(i < additionalCallsRequired)) {
-              _context.next = 33;
+              _context.next = 41;
               break;
             }
 
@@ -91,31 +123,31 @@ module.exports = function () {
             skipEndpoint = apiEndpoint + ('&skip=' + skip);
             // Query next batch from endpoint
 
-            _context.next = 23;
+            _context.next = 31;
             return (0, _axios2.default)(skipEndpoint);
 
-          case 23:
-            response = _context.sent;
+          case 31:
+            _response = _context.sent;
 
-            if (!response.data.objects) {
-              _context.next = 28;
+            if (!_response.data.objects) {
+              _context.next = 36;
               break;
             }
 
-            objects = (0, _lodash.concat)(objects, response.data.objects);
-            _context.next = 30;
+            objects = (0, _lodash.concat)(objects, _response.data.objects);
+            _context.next = 38;
             break;
 
-          case 28:
+          case 36:
             console.error(objectType + ' fetch issue: ' + documents.message);
-            return _context.abrupt('break', 33);
+            return _context.abrupt('break', 41);
 
-          case 30:
+          case 38:
             i += 1;
-            _context.next = 18;
+            _context.next = 26;
             break;
 
-          case 33:
+          case 41:
 
             console.log('Fetched ' + objects.length + ' ' + (objects.length === 1 ? 'object' : 'objects') + ' for object type: ' + objectType);
             console.timeEnd(timeLabel);
@@ -129,7 +161,7 @@ module.exports = function () {
 
             return _context.abrupt('return', objects);
 
-          case 37:
+          case 45:
           case 'end':
             return _context.stop();
         }
