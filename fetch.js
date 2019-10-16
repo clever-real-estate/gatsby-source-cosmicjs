@@ -28,7 +28,7 @@ module.exports = function () {
         isDevelopment = _ref2.isDevelopment,
         logging = _ref2.logging;
 
-    var timeLabel, objects, skip, apiEndpoint, documents, additionalCallsRequired, response, i, skipEndpoint, _response;
+    var timeLabel, objects, skip, apiEndpoint, options, documents, additionalCallsRequired, response, i, skipEndpoint, _response;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -57,15 +57,19 @@ module.exports = function () {
             if (logging) {
               console.log(apiEndpoint);
             }
+            options = {
+              headers: { 'Accept-Encoding': 'gzip,deflate' }
+            };
             // Make initial API request.
-            _context.next = 10;
-            return (0, _axios2.default)(apiEndpoint);
 
-          case 10:
+            _context.next = 11;
+            return (0, _axios2.default)(apiEndpoint, options);
+
+          case 11:
             documents = _context.sent;
 
             if (!(documents.data.objects === undefined)) {
-              _context.next = 15;
+              _context.next = 16;
               break;
             }
 
@@ -73,7 +77,7 @@ module.exports = function () {
             console.timeEnd(timeLabel);
             return _context.abrupt('return', objects);
 
-          case 15:
+          case 16:
 
             if (documents.data.objects) {
               objects = documents.data.objects;
@@ -82,7 +86,7 @@ module.exports = function () {
             // check if there's more that request limit of objects for object type
 
             if (!(documents.data.total && documents.data.total > limit)) {
-              _context.next = 41;
+              _context.next = 42;
               break;
             }
 
@@ -91,14 +95,14 @@ module.exports = function () {
             additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1;
 
             if (!isDevelopment) {
-              _context.next = 25;
+              _context.next = 26;
               break;
             }
 
-            _context.next = 21;
-            return (0, _axios2.default)(apiEndpoint);
+            _context.next = 22;
+            return (0, _axios2.default)(apiEndpoint, options);
 
-          case 21:
+          case 22:
             response = _context.sent;
 
             if (response.data.objects) {
@@ -106,15 +110,15 @@ module.exports = function () {
             } else {
               console.error(objectType + ' fetch issue: ' + documents.message);
             }
-            _context.next = 41;
+            _context.next = 42;
             break;
 
-          case 25:
+          case 26:
             i = 0;
 
-          case 26:
+          case 27:
             if (!(i < additionalCallsRequired)) {
-              _context.next = 41;
+              _context.next = 42;
               break;
             }
 
@@ -123,31 +127,31 @@ module.exports = function () {
             skipEndpoint = apiEndpoint + ('&skip=' + skip);
             // Query next batch from endpoint
 
-            _context.next = 31;
-            return (0, _axios2.default)(skipEndpoint);
+            _context.next = 32;
+            return (0, _axios2.default)(skipEndpoint, options);
 
-          case 31:
+          case 32:
             _response = _context.sent;
 
             if (!_response.data.objects) {
-              _context.next = 36;
+              _context.next = 37;
               break;
             }
 
             objects = (0, _lodash.concat)(objects, _response.data.objects);
-            _context.next = 38;
+            _context.next = 39;
             break;
 
-          case 36:
+          case 37:
             console.error(objectType + ' fetch issue: ' + documents.message);
-            return _context.abrupt('break', 41);
+            return _context.abrupt('break', 42);
 
-          case 38:
+          case 39:
             i += 1;
-            _context.next = 26;
+            _context.next = 27;
             break;
 
-          case 41:
+          case 42:
 
             console.log('Fetched ' + objects.length + ' ' + (objects.length === 1 ? 'object' : 'objects') + ' for object type: ' + objectType);
             console.timeEnd(timeLabel);
@@ -161,7 +165,7 @@ module.exports = function () {
 
             return _context.abrupt('return', objects);
 
-          case 45:
+          case 46:
           case 'end':
             return _context.stop();
         }

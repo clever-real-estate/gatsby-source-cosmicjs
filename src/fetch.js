@@ -34,8 +34,11 @@ module.exports = async ({
   if (logging) {
     console.log(apiEndpoint);
   }
+  const options = {
+    headers: {'Accept-Encoding': 'gzip,deflate'}
+  };
   // Make initial API request.
-  const documents = await axios(apiEndpoint)
+  const documents = await axios(apiEndpoint, options)
 
   // Check for empty object type
   if (documents.data.objects === undefined) {
@@ -54,7 +57,7 @@ module.exports = async ({
     // calculate number of calls to retrieve entire object type
     const additionalCallsRequired = Math.ceil(documents.data.total / limit) - 1
     if (isDevelopment) {
-      let response = await axios(apiEndpoint)
+      let response = await axios(apiEndpoint, options)
       if (response.data.objects) {
         objects = concat(objects, response.data.objects)
       } else {
@@ -66,7 +69,7 @@ module.exports = async ({
         skip = skip + limit
         let skipEndpoint = apiEndpoint + `&skip=${skip}`
         // Query next batch from endpoint
-        let response = await axios(skipEndpoint)
+        let response = await axios(skipEndpoint, options)
         if (response.data.objects) {
           objects = concat(objects, response.data.objects)
         } else {
