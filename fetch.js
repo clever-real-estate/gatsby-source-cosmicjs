@@ -23,7 +23,7 @@ module.exports = function () {
         objectType = _ref2.objectType,
         limit = _ref2.limit,
         depth = _ref2.depth,
-        slugs = _ref2.slugs,
+        getIDs = _ref2.getIDs,
         apiAccess = _ref2.apiAccess,
         hideMetafields = _ref2.hideMetafields,
         isDevelopment = _ref2.isDevelopment,
@@ -54,10 +54,11 @@ module.exports = function () {
                 apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
               }
               apiEndpoint = apiEndpoint + ('&depth=' + depth);
-              if (slugs !== null && Array.isArray(slugs)) {
-                apiEndpoint = apiEndpoint + ('&filters[_id]=' + slugs.join(','));
-              } else if (slugs !== null && typeof slugs === 'string') {
-                apiEndpoint = apiEndpoint + ('&filters[_id]=' + slugs);
+
+              if (getIDs !== null && Array.isArray(getIDs)) {
+                apiEndpoint = apiEndpoint + ('&filters[_id]=' + getIDs.join(','));
+              } else if (getIDs !== null && typeof getIDs === 'string') {
+                apiEndpoint = apiEndpoint + ('&filters[_id]=' + getIDs);
               }
             }
             if (logging) {
@@ -65,9 +66,8 @@ module.exports = function () {
             }
             options = {
               headers: { 'Accept-Encoding': 'gzip,deflate' }
+              // Make initial API request.
             };
-            // Make initial API request.
-
             _context.next = 11;
             return (0, _axios2.default)(apiEndpoint, options);
 
