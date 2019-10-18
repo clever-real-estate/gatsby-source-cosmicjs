@@ -23,6 +23,7 @@ module.exports = function () {
         objectType = _ref2.objectType,
         limit = _ref2.limit,
         depth = _ref2.depth,
+        getIDs = _ref2.getIDs,
         apiAccess = _ref2.apiAccess,
         hideMetafields = _ref2.hideMetafields,
         isDevelopment = _ref2.isDevelopment,
@@ -37,7 +38,7 @@ module.exports = function () {
             timeLabel = 'Fetch Cosmic JS data for (' + objectType + ')';
 
             console.time(timeLabel);
-            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth);
+            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth + ' Filter: ' + (getIDs ? getIDs : 'none'));
             objects = [];
             skip = 0;
             // Define API endpoint.
@@ -53,15 +54,20 @@ module.exports = function () {
                 apiEndpoint = apiEndpoint + ('&hide_metafields=' + hideMetafields);
               }
               apiEndpoint = apiEndpoint + ('&depth=' + depth);
+
+              if (getIDs !== null && Array.isArray(getIDs)) {
+                apiEndpoint = apiEndpoint + ('&filters[_id]=' + getIDs.join(','));
+              } else if (getIDs !== null && typeof getIDs === 'string') {
+                apiEndpoint = apiEndpoint + ('&filters[_id]=' + getIDs);
+              }
             }
             if (logging) {
               console.log(apiEndpoint);
             }
             options = {
               headers: { 'Accept-Encoding': 'gzip,deflate' }
+              // Make initial API request.
             };
-            // Make initial API request.
-
             _context.next = 11;
             return (0, _axios2.default)(apiEndpoint, options);
 

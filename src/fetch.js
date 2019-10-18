@@ -7,6 +7,7 @@ module.exports = async ({
   objectType,
   limit,
   depth,
+  getIDs,
   apiAccess,
   hideMetafields,
   isDevelopment,
@@ -15,7 +16,9 @@ module.exports = async ({
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
   console.log(
-    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth}`
+    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth} Filter: ${
+      getIDs ? getIDs : 'none'
+    }`
   )
   let objects = []
   let skip = 0
@@ -30,13 +33,19 @@ module.exports = async ({
       apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
     }
     apiEndpoint = apiEndpoint + `&depth=${depth}`
+
+    if (getIDs !== null && Array.isArray(getIDs)) {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${getIDs.join(',')}`
+    } else if (getIDs !== null && typeof getIDs === 'string') {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${getIDs}`
+    }
   }
   if (logging) {
-    console.log(apiEndpoint);
+    console.log(apiEndpoint)
   }
   const options = {
-    headers: {'Accept-Encoding': 'gzip,deflate'}
-  };
+    headers: { 'Accept-Encoding': 'gzip,deflate' },
+  }
   // Make initial API request.
   const documents = await axios(apiEndpoint, options)
 
