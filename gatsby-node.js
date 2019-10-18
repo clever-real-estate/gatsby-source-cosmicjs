@@ -54,6 +54,7 @@ exports.sourceNodes = function () {
                 objectType: objectType.objectType ? objectType.objectType : objectType,
                 limit: objectType.limit ? objectType.limit : limit,
                 depth: objectType.depth ? objectType.depth : depth,
+                getIDs: objectType.getIDs ? objectType.getIDs : null,
                 apiAccess: apiAccess,
                 hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
                 isDevelopment: isDevelopment,

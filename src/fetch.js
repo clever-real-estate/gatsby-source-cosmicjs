@@ -7,6 +7,7 @@ module.exports = async ({
   objectType,
   limit,
   depth,
+  slugs,
   apiAccess,
   hideMetafields,
   isDevelopment,
@@ -30,13 +31,18 @@ module.exports = async ({
       apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
     }
     apiEndpoint = apiEndpoint + `&depth=${depth}`
+    if (slugs !== null && Array.isArray(slugs)) {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${slugs.join(',')}`
+    } else if (slugs !== null && typeof slugs === 'string') {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${slugs}`
+    }
   }
   if (logging) {
-    console.log(apiEndpoint);
+    console.log(apiEndpoint)
   }
   const options = {
-    headers: {'Accept-Encoding': 'gzip,deflate'}
-  };
+    headers: { 'Accept-Encoding': 'gzip,deflate' },
+  }
   // Make initial API request.
   const documents = await axios(apiEndpoint, options)
 
