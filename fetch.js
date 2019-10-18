@@ -38,7 +38,7 @@ module.exports = function () {
             timeLabel = 'Fetch Cosmic JS data for (' + objectType + ')';
 
             console.time(timeLabel);
-            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth);
+            console.log('Starting to fetch data from Cosmic JS (' + objectType + ') Limit: ' + limit + ' Depth: ' + depth + ' Filter: ' + (getIDs ? getIDs : 'none'));
             objects = [];
             skip = 0;
             // Define API endpoint.
