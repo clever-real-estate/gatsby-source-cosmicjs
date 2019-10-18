@@ -7,7 +7,7 @@ module.exports = async ({
   objectType,
   limit,
   depth,
-  slugs,
+  getIDs,
   apiAccess,
   hideMetafields,
   isDevelopment,
@@ -31,10 +31,11 @@ module.exports = async ({
       apiEndpoint = apiEndpoint + `&hide_metafields=${hideMetafields}`
     }
     apiEndpoint = apiEndpoint + `&depth=${depth}`
-    if (slugs !== null && Array.isArray(slugs)) {
-      apiEndpoint = apiEndpoint + `&filters[_id]=${slugs.join(',')}`
-    } else if (slugs !== null && typeof slugs === 'string') {
-      apiEndpoint = apiEndpoint + `&filters[_id]=${slugs}`
+
+    if (getIDs !== null && Array.isArray(getIDs)) {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${getIDs.join(',')}`
+    } else if (getIDs !== null && typeof getIDs === 'string') {
+      apiEndpoint = apiEndpoint + `&filters[_id]=${getIDs}`
     }
   }
   if (logging) {
