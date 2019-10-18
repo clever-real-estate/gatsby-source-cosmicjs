@@ -16,7 +16,9 @@ module.exports = async ({
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
   console.time(timeLabel)
   console.log(
-    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth}`
+    `Starting to fetch data from Cosmic JS (${objectType}) Limit: ${limit} Depth: ${depth} Filter: ${
+      getIDs ? getIDs : 'none'
+    }`
   )
   let objects = []
   let skip = 0
