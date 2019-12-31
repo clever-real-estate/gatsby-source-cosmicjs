@@ -112,19 +112,20 @@ module.exports = async ({
  */
 const clean = item => {
   forEach(item, (value, key) => {
+    if (
+      !key ||
+      typeof key !== 'string' ||
+      key.length < 1 ||
+      !RegExp(/^[_a-zA-Z][_a-zA-Z0-9]*$/g).test(key)
+    ) {
+      console.log('COSMIC KEY ERROR')
+      console.log(item.slug)
+      console.log(item._id)
+    }
     if (startsWith(key, `__`)) {
       delete item[key]
     } else if (isObject(value)) {
       item[key] = clean(value)
-    }
-    if (!key
-      || typeof key !== 'string'
-      || key.length < 1
-      || !RegExp(/^[_a-zA-Z][_a-zA-Z0-9]*$/g).test(key)
-      ) {
-      console.log('COSMIC KEY ERROR')
-      console.log(item.slug)
-      console.log(item._id)
     }
   })
 
