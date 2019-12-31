@@ -117,14 +117,16 @@ const clean = item => {
     } else if (isObject(value)) {
       item[key] = clean(value)
     }
-    if (key.length < 1 || key.match(/^[_a-zA-Z][_a-zA-Z0-9]*$/g)) {
-      console.log('COSMIC KEY ERROR');
-      console.log(item.slug);
-      console.log(item._id);
+    if (!key
+      || typeof key !== 'string'
+      || key.length < 1
+      || !RegExp(/^[_a-zA-Z][_a-zA-Z0-9]*$/g).test(key)
+      ) {
+      console.log('COSMIC KEY ERROR')
+      console.log(item.slug)
+      console.log(item._id)
     }
   })
-
-
 
   return item
 }
