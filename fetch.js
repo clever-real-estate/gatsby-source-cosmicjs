@@ -192,11 +192,16 @@ module.exports = function () {
  */
 var clean = function clean(item) {
   (0, _lodash.forEach)(item, function (value, key) {
-    if (!key || typeof key !== 'string' || key.length < 1 || !RegExp(/^[_a-zA-Z][_a-zA-Z0-9]*$/g).test(key)) {
-      console.log('COSMIC KEY ERROR');
-      console.log(item.slug);
-      console.log(item._id);
-    }
+    // if (
+    //   key ||
+    //   typeof key !== 'string' ||
+    //   key.length < 1 ||
+    //   !RegExp(/^[_a-zA-Z][_a-zA-Z0-9]*$/g).test(key)
+    // ) {
+    //   console.log('COSMIC KEY ERROR')
+    //   console.log(item.slug)
+    //   console.log(item._id)
+    // }
     if ((0, _lodash.startsWith)(key, '__')) {
       delete item[key];
     } else if ((0, _lodash.isObject)(value)) {
