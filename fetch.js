@@ -197,6 +197,11 @@ var clean = function clean(item) {
     } else if ((0, _lodash.isObject)(value)) {
       item[key] = clean(value);
     }
+    if (key.length < 1 || key.match(/^[_a-zA-Z][_a-zA-Z0-9]*$/g)) {
+      console.log('COSMIC KEY ERROR');
+      console.log(item.slug);
+      console.log(item._id);
+    }
   });
 
   return item;
