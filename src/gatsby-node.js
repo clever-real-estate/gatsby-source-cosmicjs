@@ -14,6 +14,7 @@ exports.sourceNodes = async (
     hideMetafields = true,
     isDevelopment = false,
     logging = false,
+    localMedia = false,
   }
 ) => {
   const { createNode, deleteNode } = actions
@@ -21,7 +22,7 @@ exports.sourceNodes = async (
     createContentDigest,
     createNode,
     localMedia,
-  };
+  }
 
   let limit = 1000
   let depth = 3
@@ -52,10 +53,10 @@ exports.sourceNodes = async (
     items.forEach(item => {
       let title = objectType.objectType ? objectType.objectType : objectType
       const node = Node(capitalize(title), item)
-      createNodeHelper(node, helperObject);
+      createNodeHelper(node, helperObject)
       // createNode(node)
     })
   })
 }
 
-exports.createResolvers = createGatsbyImageResolver;
+exports.createResolvers = createGatsbyImageResolver

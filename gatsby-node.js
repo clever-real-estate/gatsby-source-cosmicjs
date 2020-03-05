@@ -24,7 +24,8 @@ exports.sourceNodes = async ({
   apiAccess = {},
   hideMetafields = true,
   isDevelopment = false,
-  logging = false
+  logging = false,
+  localMedia = false
 }) => {
   const {
     createNode,
