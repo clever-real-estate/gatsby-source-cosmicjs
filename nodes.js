@@ -1,21 +1,17 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Node = undefined;
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _gatsbyNodeHelpers = require('gatsby-node-helpers');
+exports.__esModule = true;
+exports.Node = void 0;
 
-var _gatsbyNodeHelpers2 = _interopRequireDefault(_gatsbyNodeHelpers);
+var _gatsbyNodeHelpers = _interopRequireDefault(require("gatsby-node-helpers"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _createNodeHelpers = (0, _gatsbyNodeHelpers2.default)({
+const {
+  createNodeFactory
+} = (0, _gatsbyNodeHelpers.default)({
   typePrefix: 'Cosmicjs'
-}),
-    createNodeFactory = _createNodeHelpers.createNodeFactory;
-
+});
 /**
  * Node factory with `type` option based on
  * original `createNodeFactory`.
@@ -25,11 +21,10 @@ var _createNodeHelpers = (0, _gatsbyNodeHelpers2.default)({
  * @constructor
  */
 
+const Node = (type, node) => createNodeFactory(type, node => {
+  node.id = node._id;
+  delete node._id;
+  return node;
+})(node);
 
-var Node = exports.Node = function Node(type, node) {
-  return createNodeFactory(type, function (node) {
-    node.id = node._id;
-    delete node._id;
-    return node;
-  })(node);
-};
+exports.Node = Node;

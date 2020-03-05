@@ -1,9 +1,11 @@
 import fetchData from './fetch'
 import { Node } from './nodes'
 import { capitalize } from 'lodash'
+import { createNodeHelper } from './utils'
+import { createGatsbyImageResolver } from './gatsby-image-resolver'
 
 exports.sourceNodes = async (
-  { boundActionCreators },
+  { actions, webhookBody, createContentDigest, getNode },
   {
     apiURL = 'https://api.cosmicjs.com/v1',
     bucketSlug = '',
@@ -14,7 +16,13 @@ exports.sourceNodes = async (
     logging = false,
   }
 ) => {
-  const { createNode } = boundActionCreators
+  const { createNode, deleteNode } = actions
+  const helperObject = {
+    createContentDigest,
+    createNode,
+    localMedia,
+  };
+
   let limit = 1000
   let depth = 3
   const promises = objectTypes.map(objectType => {
@@ -44,7 +52,10 @@ exports.sourceNodes = async (
     items.forEach(item => {
       let title = objectType.objectType ? objectType.objectType : objectType
       const node = Node(capitalize(title), item)
-      createNode(node)
+      createNodeHelper(node, helperObject);
+      // createNode(node)
     })
   })
 }
+
+exports.createResolvers = createGatsbyImageResolver;
