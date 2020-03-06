@@ -25,7 +25,7 @@ exports.createGatsbyImageResolver = ({
 
     createResolvers({
       CosmicjsLocalMedia: {
-        local: {
+        transformedImage: {
           type: `File`,
 
           async resolve(source, _args, _context, _info) {
@@ -46,14 +46,15 @@ exports.createGatsbyImageResolver = ({
                     nodeId: fileNodeID
                   });
                 }
-              } // If we don't have cached data, download the file
+              }
 
+              const BLOG_DEFAULT_IMAGE_URL = 'https://cdn.cosmicjs.com/a47dd4c0-d3fc-11e9-a59e-bf2282b4da3a-cleverplaceholder.jpg'; // If we don't have cached data, download the file
 
               if (!fileNodeID) {
                 try {
                   // Get the filenode
                   fileNode = await createRemoteFileNode({
-                    url: source.url,
+                    url: source.url ? source.url : BLOG_DEFAULT_IMAGE_URL,
                     store,
                     cache,
                     createNode,
