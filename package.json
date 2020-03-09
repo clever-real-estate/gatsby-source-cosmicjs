@@ -1,10 +1,9 @@
 {
-  "name": "gatsby-source-cosmicjs",
-  "version": "0.0.7",
-  "description": "Gatsby Source Plugin for building websites using Cosmic JS as a data source",
+  "name": "@cleverrealestate/gatsby-source-cosmicjs",
+  "version": "0.0.1",
+  "description": "Gatsby Source Plugin for building websites using Cosmic JS as a data source with a lil Clever flair",
   "author": {
-    "email": "tspiro@tonyspiro.com",
-    "name": "Tony Spiro",
+    "name": "Clever",
     "url": "https://cosmicjs.com"
   },
   "repository": {
