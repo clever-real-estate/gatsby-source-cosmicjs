@@ -9,7 +9,7 @@ const generateTypeSlug = slug => {
 }
 
 const createMediaArray = (item, { createContentDigest, createNode }) => {
-  if (item.metafields === undefined) {
+  if (item.metafields === undefined || item.metafields === null) {
     return item
   }
   item.metafields.forEach(metafield => {
@@ -35,11 +35,17 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
     // TODO: You could also do this for Parent & Repeater types
     ////
     if (metafield.type === 'object') {
-      item.metadata[metafield.key] = createMediaArray(metafield.object, { createContentDigest, createNode });
+      item.metadata[metafield.key] = createMediaArray(metafield.object, {
+        createContentDigest,
+        createNode,
+      })
     }
     if (metafield.type === 'objects') {
       for (let i = 0; metafield.objects.length > i; i += 1) {
-        item.metadata[metafield.key][i] = createMediaArray(metafield.objects[i], { createContentDigest, createNode });
+        item.metadata[metafield.key][i] = createMediaArray(
+          metafield.objects[i],
+          { createContentDigest, createNode }
+        )
       }
     }
   })

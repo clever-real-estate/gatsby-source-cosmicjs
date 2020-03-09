@@ -19,7 +19,7 @@ const createMediaArray = (item, {
   createContentDigest,
   createNode
 }) => {
-  if (item.metafields === undefined) {
+  if (item.metafields === undefined || item.metafields === null) {
     return item;
   }
 
