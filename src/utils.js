@@ -9,6 +9,10 @@ const generateTypeSlug = slug => {
 }
 
 const createMediaArray = (item, { createContentDigest, createNode }) => {
+  console.log(item);
+  if (item.metafields === undefined) {
+    return item
+  }
   item.metafields.forEach(metafield => {
     if (
       metafield.type == 'file' &&
