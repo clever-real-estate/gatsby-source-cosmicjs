@@ -48,12 +48,18 @@ const createMediaArray = (item, {
 
 
     if (metafield.type === 'object') {
-      item.metadata[metafield.key] = createMediaArray(metafield.object);
+      item.metadata[metafield.key] = createMediaArray(metafield.object, {
+        createContentDigest,
+        createNode
+      });
     }
 
     if (metafield.type === 'objects') {
       for (let i = 0; metafield.objects.length > i; i += 1) {
-        item.metadata[metafield.key][i] = createMediaArray(metafield.objects[i]);
+        item.metadata[metafield.key][i] = createMediaArray(metafield.objects[i], {
+          createContentDigest,
+          createNode
+        });
       }
     }
   });
