@@ -58,9 +58,9 @@ exports.sourceNodes = async ({
   objectTypes.forEach((objectType, i) => {
     var items = data[i];
     items.forEach(item => {
-      let title = objectType.objectType ? objectType.objectType : objectType;
-      const node = (0, _nodes.Node)((0, _lodash.capitalize)(title), item);
-      (0, _utils.createNodeHelper)(node, helperObject); // createNode(node)
+      // let title = objectType.objectType ? objectType.objectType : objectType
+      // const node = Node(capitalize(title), item)
+      (0, _utils.createNodeHelper)(item, helperObject); // createNode(node)
     });
   });
 };
