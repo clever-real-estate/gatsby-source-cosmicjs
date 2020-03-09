@@ -22,7 +22,6 @@ exports.sourceNodes = async ({
   bucketSlug = '',
   objectTypes = [],
   apiAccess = {},
-  hideMetafields = true,
   isDevelopment = false,
   logging = false,
   localMedia = false
@@ -47,7 +46,7 @@ exports.sourceNodes = async ({
       depth: objectType.depth ? objectType.depth : depth,
       getIDs: objectType.getIDs ? objectType.getIDs : null,
       apiAccess,
-      hideMetafields: objectType.hideMetafields !== undefined ? objectType.hideMetafields : hideMetafields,
+      hideMetafields: false,
       isDevelopment,
       logging
     });

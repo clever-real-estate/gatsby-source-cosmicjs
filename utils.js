@@ -19,6 +19,9 @@ const createMediaArray = (item, {
   createContentDigest,
   createNode
 }) => {
+  ////
+  // Check for base case
+  ////
   if (item.metafields === undefined || item.metafields === null) {
     return item;
   }
@@ -56,6 +59,10 @@ const createMediaArray = (item, {
 
     if (metafield.type === 'objects' && metafield.objects && Array.isArray(metafield.objects)) {
       for (let i = 0; metafield.objects.length > i; i += 1) {
+        ////
+        // Recursive call for images of related objects
+        // For us this is related blog post images.
+        ////
         item.metadata[metafield.key][i] = createMediaArray(metafield.objects[i], {
           createContentDigest,
           createNode
