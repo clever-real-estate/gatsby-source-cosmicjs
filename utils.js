@@ -50,6 +50,20 @@ const createMediaArray = (item, {
     ////
 
 
+    if (metafield.type === 'repeater' && Array.isArray(metafield.repeater_fields) && Array.isArray(metafield.children)) {
+      const repeaterKeys = metafield.repeater_fields.map(repeating_item => repeating_item.key);
+
+      for (let i = 0; metafield.children.length > i; i += 1) {
+        for (let keyIdx = 0; repeaterKeys.length > keyIdx; keyIdx += 1) {
+          const subKey = repeaterKeys[keyIdx];
+          item.metadata[metafield.key][i][subKey] = createMediaArray(item.metadata[metafield.key][i][subKey], {
+            createContentDigest,
+            createNode
+          });
+        }
+      }
+    }
+
     if (metafield.type === 'object' && metafield.object) {
       item.metadata[metafield.key] = createMediaArray(metafield.object, {
         createContentDigest,
