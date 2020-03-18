@@ -37,6 +37,24 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
     ////
     // TODO: You could also do this for Parent & Repeater types
     ////
+    if (
+      metafield.type === 'repeater' &&
+      Array.isArray(metafield.repeater_fields) &&
+      Array.isArray(metafield.children)
+    ) {
+      const repeaterKeys = metafield.repeater_fields.map(
+        repeating_item => repeating_item.key
+      )
+      for (let i = 0; metafield.children.length > i; i += 1) {
+        for (let keyIdx = 0; repeaterKeys.length > keyIdx; keyIdx += 1) {
+          const subKey = repeaterKeys[keyIdx]
+          item.metadata[metafield.key][i][subKey] = createMediaArray(
+            item.metadata[metafield.key][i][subKey],
+            { createContentDigest, createNode }
+          )
+        }
+      }
+    }
     if (metafield.type === 'object' && metafield.object) {
       item.metadata[metafield.key] = createMediaArray(metafield.object, {
         createContentDigest,
@@ -63,12 +81,30 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
   return item
 }
 
+const deleteItemMetadata = item => {
+  if (!item) {
+    return item
+  }
+  if (typeof item === 'object') {
+    delete item.metafields
+    const keys = _.keys(item)
+    for (let i = 0; keys.length > i; i += 1) {
+      const key = keys[i]
+      item[key] = deleteItemMetadata(item[key])
+    }
+  } else if (Array.isArray(item)) {
+    return _.map(item, sub => deleteItemMetadata(sub))
+  }
+  return item
+}
+
 exports.createNodeHelper = (item, helperObject) => {
   const { createContentDigest, createNode, localMedia } = helperObject
   if (localMedia) {
     item = createMediaArray(item, helperObject)
   }
   let typeSlug = generateTypeSlug(item.type_slug)
-  const node = processObject(typeSlug, item, createContentDigest)
+  const cleanedItem = deleteItemMetadata(item)
+  const node = processObject(typeSlug, cleanedItem, createContentDigest)
   createNode(node)
 }
