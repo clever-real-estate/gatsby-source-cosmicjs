@@ -91,14 +91,17 @@ const deleteItemMetadata = item => {
   if (typeof item === 'object') {
     delete item.metafields;
 
-    _.forIn(item, sub => {
-      deleteItemMetadata(sub);
-    });
+    const keys = _.keys(item);
+
+    for (let i = 0; keys.length > i; i += 1) {
+      const key = keys[i];
+      item[key] = deleteItemMetadata(item[key]);
+    }
   } else if (Array.isArray(item)) {
-    _.each(item, sub => {
-      deleteItemMetadata(sub);
-    });
+    return _.map(item, sub => deleteItemMetadata(sub));
   }
+
+  return item;
 };
 
 exports.createNodeHelper = (item, helperObject) => {
@@ -113,7 +116,7 @@ exports.createNodeHelper = (item, helperObject) => {
   }
 
   let typeSlug = generateTypeSlug(item.type_slug);
-  deleteItemMetadata(item);
-  const node = processObject(typeSlug, item, createContentDigest);
+  const cleanedItem = deleteItemMetadata(item);
+  const node = processObject(typeSlug, cleanedItem, createContentDigest);
   createNode(node);
 };

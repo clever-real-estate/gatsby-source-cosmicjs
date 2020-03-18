@@ -84,15 +84,15 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
 const deleteItemMetadata = item => {
   if (typeof item === 'object') {
     delete item.metafields
-    const keys = _.keys(item);
+    const keys = _.keys(item)
     for (let i = 0; keys.length > i; i += 1) {
-      const key = keys[i];
-      item[key] = deleteItemMetadata(item[key]);
+      const key = keys[i]
+      item[key] = deleteItemMetadata(item[key])
     }
   } else if (Array.isArray(item)) {
-    return _.map(item, sub => deleteItemMetadata(sub));
+    return _.map(item, sub => deleteItemMetadata(sub))
   }
-  return item;
+  return item
 }
 
 exports.createNodeHelper = (item, helperObject) => {
