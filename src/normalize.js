@@ -13,4 +13,3 @@ exports.processObject = (type, item, createContentDigest) => {
   }
   return Object.assign({}, item, nodeMetadata)
 }
-

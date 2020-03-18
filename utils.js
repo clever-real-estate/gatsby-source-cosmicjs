@@ -87,6 +87,20 @@ const createMediaArray = (item, {
   return item;
 };
 
+const deleteItemMetadata = item => {
+  if (typeof item === 'object') {
+    delete item.metafields;
+
+    _.forIn(item, sub => {
+      deleteItemMetadata(sub);
+    });
+  } else if (Array.isArray(item)) {
+    _.each(item, sub => {
+      deleteItemMetadata(sub);
+    });
+  }
+};
+
 exports.createNodeHelper = (item, helperObject) => {
   const {
     createContentDigest,
@@ -99,6 +113,7 @@ exports.createNodeHelper = (item, helperObject) => {
   }
 
   let typeSlug = generateTypeSlug(item.type_slug);
+  deleteItemMetadata(item);
   const node = processObject(typeSlug, item, createContentDigest);
   createNode(node);
 };

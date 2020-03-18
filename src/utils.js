@@ -81,18 +81,18 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
   return item
 }
 
-const deleteItemMetadata = (item) => {
+const deleteItemMetadata = item => {
   if (typeof item === 'object') {
-    delete item.metafields;
-    _.forIn(item, (sub) => {
-      deleteItemMetadata(sub);
-    });
+    delete item.metafields
+    _.forIn(item, sub => {
+      deleteItemMetadata(sub)
+    })
   } else if (Array.isArray(item)) {
-    _.each(item, (sub) => {
-      deleteItemMetadata(sub);
-    });
+    _.each(item, sub => {
+      deleteItemMetadata(sub)
+    })
   }
-};
+}
 
 exports.createNodeHelper = (item, helperObject) => {
   const { createContentDigest, createNode, localMedia } = helperObject
@@ -100,7 +100,7 @@ exports.createNodeHelper = (item, helperObject) => {
     item = createMediaArray(item, helperObject)
   }
   let typeSlug = generateTypeSlug(item.type_slug)
-  deleteItemMetadata(item);
+  deleteItemMetadata(item)
   const node = processObject(typeSlug, item, createContentDigest)
   createNode(node)
 }
