@@ -88,6 +88,10 @@ const createMediaArray = (item, {
 };
 
 const deleteItemMetadata = item => {
+  if (!item) {
+    return item;
+  }
+
   if (typeof item === 'object') {
     delete item.metafields;
 

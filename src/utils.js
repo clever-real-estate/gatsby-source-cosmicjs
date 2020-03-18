@@ -82,6 +82,9 @@ const createMediaArray = (item, { createContentDigest, createNode }) => {
 }
 
 const deleteItemMetadata = item => {
+  if (!item) {
+    return item;
+  }
   if (typeof item === 'object') {
     delete item.metafields
     const keys = _.keys(item)
