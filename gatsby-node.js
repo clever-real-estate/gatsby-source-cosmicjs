@@ -24,7 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.sourceNodes = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2, _ref3) {
-    var boundActionCreators = _ref2.boundActionCreators;
+    var actions = _ref2.actions;
     var _ref3$apiURL = _ref3.apiURL,
         apiURL = _ref3$apiURL === undefined ? 'https://api.cosmicjs.com/v1' : _ref3$apiURL,
         _ref3$bucketSlug = _ref3.bucketSlug,
@@ -44,7 +44,7 @@ exports.sourceNodes = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            createNode = boundActionCreators.createNode;
+            createNode = actions.createNode;
             limit = 1000;
             depth = 3;
             promises = objectTypes.map(function (objectType) {
