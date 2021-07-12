@@ -3,7 +3,7 @@ import { Node } from './nodes'
 import { capitalize } from 'lodash'
 
 exports.sourceNodes = async (
-  { boundActionCreators },
+  { actions },
   {
     apiURL = 'https://api.cosmicjs.com/v1',
     bucketSlug = '',
@@ -14,7 +14,7 @@ exports.sourceNodes = async (
     logging = false,
   }
 ) => {
-  const { createNode } = boundActionCreators
+  const { createNode } = actions
   let limit = 1000
   let depth = 3
   const promises = objectTypes.map(objectType => {
